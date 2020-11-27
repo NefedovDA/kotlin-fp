@@ -48,6 +48,16 @@ object SMonoid : Monoid<String> {
     override fun append(a1: String, a2: String): String = a1 + a2
 }
 
+fun <A, B, C> compose(f: (B) -> C, g: (A) -> B): (A) -> C = { x -> f(g(x)) }
 
-fun <P1, P2, R> curry(f: (P1, P2) -> R): (P1) -> (P2) -> R =
-    { p1 -> { p2 -> f(p1, p2) } }
+val sum: (Int) -> (Int) -> Int = curry(Int::plus)
+
+val mult: (Int) -> (Int) -> Int = curry(Int::times)
+
+val add3: (Int) -> Int = sum(3)
+
+val mult2: (Int) -> Int = mult(3)
+
+val add3mult2: (Int) -> Int = compose(add3, mult2)
+
+val f: (Int) -> (Int) -> Int = compose(sum, mult2)
